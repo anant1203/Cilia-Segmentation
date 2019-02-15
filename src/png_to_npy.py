@@ -8,9 +8,15 @@ import numpy as np
 
 
 def dir_to_npy(dir, save=False, outfile=None):
+    """
+    This will convert a directory of png images to a single npy file
+    Parameters:
+    dir: string, directory containing png files
+    save: boolean, if true this module will save the npy file directly
+    outfile: string, directory to save npy file if save == true
+    """
     vid = []
-    for im in glob.glob(dir+'/*'):
-        print(im)
+    for im in sorted(glob.glob(dir+'/*')):
         img = imageio.imread(im)
         vid.append(img)
     if save:
@@ -42,20 +48,23 @@ if __name__ == "__main__":
                         help=('degree of parallelism to use -1 will use all ',
                               'present cores[default: -1]'))
     parser.add_argument("-s", "--save_inproc", action="store_true",
-                        help=("if true data will be written in time (good for ",
-                        "large datasets)"))
+                        help=("if true data will be written in time (good for",
+                              " large datasets)"))
 
+    # parse input and output arguments
     args = vars(parser.parse_args())
     if not os.path.exists(args['output']):
         os.mkdir(args['output'])
 
     file_list = glob.glob(args['input']+'*')
-    print(file_list)
 
+    # run over all input in parallel
     out = joblib.Parallel(n_jobs=args['n_jobs'], verbose=10,)(
           joblib.delayed(dir_to_npy)(f, args['save_inproc'], args['output'])
           for f in file_list
     )
+
+    # if save is set to save at the end, save all data at once
     if not args["save_inproc"]:
         for outs, f in zip(out, file_list):
             key = f.split(os.path.sep)[-1].split(".")[0]
