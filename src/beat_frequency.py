@@ -2,27 +2,23 @@ import numpy as np
 import skimage.io as io
 import scipy.signal as signal
 
-def get_beat_frequency(vid):
+def get_beat_frequency(vid, f_size=15):
     """Perform fft on a video(100 frames) and extract the dominant frequency.
     Filtering is performed to reduce the effects of noise.
     
     Parameters:
-    vid, a matrix shape f,n,m where f is the number of frames size n by m
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter.
     
     Result:
-    matrix, a matrix shape n*m,f representing the video in the format listed
-        above
+    Matrix of shape n, m consisting of each pixel's dominant frequency
     """
     
     
     #Number of frames
     N = vid.shape[0]
-    
-    #Filter size
-    f_size = 15
-    
-    #frames = io.ImageCollection(dir + 'frames.*png')
-    #combined_frames = io.concatenate_images(frames)
+
+   
     
     #Mean centering
     combined_frames_0mean = combined_frames - vid.mean(axis=0)
