@@ -21,7 +21,7 @@ def get_beat_frequency(vid, f_size=15):
    
     
     #Mean centering
-    combined_frames_0mean = combined_frames - vid.mean(axis=0)
+    combined_frames_0mean = vid - vid.mean(axis=0)
     
     #Fft of centered data
     combined_frames_fft = np.fft.fft(combined_frames_0mean, axis = 0)
