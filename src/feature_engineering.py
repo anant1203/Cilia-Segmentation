@@ -100,7 +100,8 @@ def get_beat_frequency(vid, f_size=15):
 
 
 def get_features(vid, f_size=5):
-    """Stack the features into a 3D array
+    """
+    Stack the features into a 3D array
 
     Parameters
     ----------
@@ -116,6 +117,20 @@ def get_features(vid, f_size=5):
 
 
 def save_helper(dispatch, filename, feature, outfile):
+    """
+    saves feature map as determined by command line args
+
+    Parameters
+    ----------
+    dispatch: the function to be called on numpy
+    filename: location of the numpy file
+    feature: name of feature being created
+    outfile: directory to save to
+
+    Return
+    ------
+    None
+    """
     vid = np.load(filename)
     out = dispatch(vid)
     key = filename.split(os.path.sep)[-1].split(".")[0]
@@ -147,8 +162,15 @@ if __name__ == "__main__":
     parser.add_argument("--feature", "-f", default='variance',
                         help=('if set to "variance" it will compute variance.',
                               'if set to "frequency" it will comput beat.',
-                              'frequencies. if set to "both" it will create',
-                              'a multichannel feature map of both.'))
+                              'frequencies. if set to "optic" it will create',
+                              'optical flow features. if set to "var-freq" it',
+                              'will create a feature map of variance and freq',
+                              '. If set to "var-opt" it will create a feature',
+                              ' map of variance and optical flow. If set to ',
+                              '"freq-opt" it will create a feature map of ',
+                              'freq and optical flow. If set to "all" it ',
+                              'will create a multichannel feature map of all ',
+                              'features.'))
     parser.add_argument("-s", "--save_inproc", action="store_true",
                         help=("if true data will be written in time (good for",
                               " large datasets)"))
@@ -162,7 +184,11 @@ if __name__ == "__main__":
 
     dispatch = {'variance': get_variance_as_im,
                 'frequency': get_beat_frequency,
-                'both': get_features}
+                'optic': get_optical_flow,
+                'var-opt': stack-var-optic,
+                'var-freq': stack-var-freq,
+                'freq-opt': stack-freq-opt,
+                'all': get_features}
     # run over all input in parallel
     out = joblib.Parallel(n_jobs=args['n_jobs'], verbose=10,)(
           joblib.delayed(save_helper)(dispatch[args['feature']], f,
