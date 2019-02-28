@@ -99,6 +99,61 @@ def get_beat_frequency(vid, f_size=15):
     return results_filtered
 
 
+def get_optical_flow():
+    return()
+
+
+def stack_var_optic():
+    """
+    Stack the variance and optical flow into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_variance_as_im(vid), get_optical_flow(vid)))
+
+
+def stack_var_freq():
+    """
+    Stack the variance and frequency into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_variance_as_im(vid), get_beat_frequency(vid)))
+
+
+def stack_freq_opt():
+    """
+    Stack the frequency and optical flow into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_beat_frequency(vid), get_optical_flow(vid)))
+
+
 def get_features(vid, f_size=5):
     """
     Stack the features into a 3D array
@@ -113,7 +168,8 @@ def get_features(vid, f_size=5):
     Matrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
-    return np.dstack((get_beat_frequency(vid), get_variance_as_im(vid)))
+    return np.dstack((get_beat_frequency(vid), get_variance_as_im(vid),
+                      get_optical_flow(vid)))
 
 
 def save_helper(dispatch, filename, feature, outfile):
@@ -185,9 +241,9 @@ if __name__ == "__main__":
     dispatch = {'variance': get_variance_as_im,
                 'frequency': get_beat_frequency,
                 'optic': get_optical_flow,
-                'var-opt': stack-var-optic,
-                'var-freq': stack-var-freq,
-                'freq-opt': stack-freq-opt,
+                'var-opt': stack_var_optic,
+                'var-freq': stack_var_freq,
+                'freq-opt': stack_freq_opt,
                 'all': get_features}
     # run over all input in parallel
     out = joblib.Parallel(n_jobs=args['n_jobs'], verbose=10,)(
