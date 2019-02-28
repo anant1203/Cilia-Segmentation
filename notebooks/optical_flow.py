@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[13]:
-
-
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -40,8 +34,11 @@ def optical_flow(video):
         hsv[...,0] = ang*180/np.pi/2
         hsv[...,2] = cv2.normalize(mag,None,0,255,cv2.NORM_MINMAX) 
         bgr = cv2.cvtColor(hsv,cv2.COLOR_HSV2BGR) 
-        gray = cv2.cvtColor(bgr,cv2.COLOR_BGR2GRAY)
-        k = cv2.waitKey(30) & 0xff
+        gaussian_smoothing = cv2.blur(bgr,(5,5))
+        thresh= cv2.threshold(gaussian_smoothing, 66, 255, cv2.THRESH_BINARY)[1]
+        gray = cv2.cvtColor(thresh,cv2.COLOR_BGR2GRAY)
+        cv2.imshow('frame',bgr)
+        #k = cv2.waitKey(30) & 0xff
     
         # storing the value convert value in final aray
         final += np.asarray(gray)
@@ -61,7 +58,8 @@ def video(image_files):
     #create a video
     for image in image_files:
         img=cv2.imread(image,0)
-        video.append(img)
+        res = cv2.resize(img, dsize=(256, 256), interpolation=cv2.INTER_CUBIC)
+        video.append(res)
     
     return video
 
@@ -83,26 +81,10 @@ def path(dir_path):
 if __name__=='__main__' :
     
     print("give the path of the directory")
-    dir_path=sys.argv[0]
+    dir_path="/home/anant/data_science_practicum/p2/cilia Segementation/documents and data/dataset/data/new/"
     image_files=path(dir_path)
     video=video(image_files)
     optical_flow_array=optical_flow(video)
-
-
-# In[11]:
-
-
-
-
-
-# In[12]:
-
-
-
-
-
-# In[ ]:
-
 
 
 
