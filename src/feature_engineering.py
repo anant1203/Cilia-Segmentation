@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.signal as signal
+import cv2
 
 import argparse
 import glob
@@ -99,8 +100,49 @@ def get_beat_frequency(vid, f_size=15):
     return results_filtered
 
 
-def get_optical_flow():
-    return()
+def get_optical_flow(video):
+    """
+    This is for computing the optical flow of a given video.
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m
+
+    Return
+    ------
+    final: final aray matrix n x m
+    """
+
+    # storing the first frame of the video
+    initial_frame = video[0]
+
+    # converting it into proper format
+    hsv = np.zeros_like(initial_frame)
+    hsv = np.expand_dims(hsv, axis=2)
+    rgb_frame = cv2.cvtColor(initial_frame, cv2.COLOR_GRAY2RGB)
+    hsv = cv2.cvtColor(rgb_frame, cv2.COLOR_RGB2HSV)
+    hsv[..., 1] = 255
+    final = 0
+    # optical flow code reference:https://docs.opencv.org/3.4/d7/d8b/
+    #   tutorial_py_lucas_kanade.html
+    for next_frame in video[1:]:
+        previous_frame = initial_frame
+        flow = cv2.calcOpticalFlowFarneback(previous_frame, next_frame, None,
+                                            0.5, 3, 15, 3, 5, 1.2, 0)
+        mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
+        hsv[..., 0] = ang*180/np.pi/2
+        hsv[..., 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
+        bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+        gaussian_smoothing = cv2.blur(bgr, (5, 5))
+        thresh = cv2.threshold(gaussian_smoothing, 66, 255,
+                               cv2.THRESH_BINARY)[1]
+        gray = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
+
+        # storing the value convert value in final aray
+        final += np.asarray(gray)
+        previous_frame = next_frame
+
+    return final
 
 
 def stack_var_optic():
