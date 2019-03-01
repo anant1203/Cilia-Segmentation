@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.signal as signal
+import cv2
 
 import argparse
 import glob
@@ -99,8 +100,54 @@ def get_beat_frequency(vid, f_size=15):
     return results_filtered
 
 
-def get_features(vid, f_size=5):
-    """Stack the features into a 3D array
+def get_optical_flow(video):
+    """
+    This is for computing the optical flow of a given video.
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m
+
+    Return
+    ------
+    final: final aray matrix n x m
+    """
+
+    # storing the first frame of the video
+    initial_frame = video[0]
+
+    # converting it into proper format
+    hsv = np.zeros_like(initial_frame)
+    hsv = np.expand_dims(hsv, axis=2)
+    rgb_frame = cv2.cvtColor(initial_frame, cv2.COLOR_GRAY2RGB)
+    hsv = cv2.cvtColor(rgb_frame, cv2.COLOR_RGB2HSV)
+    hsv[..., 1] = 255
+    final = 0
+    # optical flow code reference:https://docs.opencv.org/3.4/d7/d8b/
+    #   tutorial_py_lucas_kanade.html
+    for next_frame in video[1:]:
+        previous_frame = initial_frame
+        flow = cv2.calcOpticalFlowFarneback(previous_frame, next_frame, None,
+                                            0.5, 3, 15, 3, 5, 1.2, 0)
+        mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
+        hsv[..., 0] = ang*180/np.pi/2
+        hsv[..., 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
+        bgr = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
+        gaussian_smoothing = cv2.blur(bgr, (5, 5))
+        thresh = cv2.threshold(gaussian_smoothing, 66, 255,
+                               cv2.THRESH_BINARY)[1]
+        gray = cv2.cvtColor(thresh, cv2.COLOR_BGR2GRAY)
+
+        # storing the value convert value in final aray
+        final += np.asarray(gray)
+        previous_frame = next_frame
+
+    return final
+
+
+def stack_var_optic():
+    """
+    Stack the variance and optical flow into a 3D array
 
     Parameters
     ----------
@@ -112,10 +159,76 @@ def get_features(vid, f_size=5):
     Matrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
-    return np.dstack((get_beat_frequency(vid), get_variance_as_im(vid)))
+    return np.dstack((get_variance_as_im(vid), get_optical_flow(vid)))
+
+
+def stack_var_freq():
+    """
+    Stack the variance and frequency into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_variance_as_im(vid), get_beat_frequency(vid)))
+
+
+def stack_freq_opt():
+    """
+    Stack the frequency and optical flow into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_beat_frequency(vid), get_optical_flow(vid)))
+
+
+def get_features(vid, f_size=5):
+    """
+    Stack the features into a 3D array
+
+    Parameters
+    ----------
+    vid, a matrix shape f,n,m where f is the number of frames size n by m.
+    f_size, the dimensions of the filter used in fft.
+
+    Result
+    ------
+    Matrix of shape frame_width, frame_heigth, number of features
+    """
+    # Return both features as multichannel
+    return np.dstack((get_beat_frequency(vid), get_variance_as_im(vid),
+                      get_optical_flow(vid)))
 
 
 def save_helper(dispatch, filename, feature, outfile):
+    """
+    saves feature map as determined by command line args
+
+    Parameters
+    ----------
+    dispatch: the function to be called on numpy
+    filename: location of the numpy file
+    feature: name of feature being created
+    outfile: directory to save to
+
+    Return
+    ------
+    None
+    """
     vid = np.load(filename)
     out = dispatch(vid)
     key = filename.split(os.path.sep)[-1].split(".")[0]
@@ -147,8 +260,15 @@ if __name__ == "__main__":
     parser.add_argument("--feature", "-f", default='variance',
                         help=('if set to "variance" it will compute variance.',
                               'if set to "frequency" it will comput beat.',
-                              'frequencies. if set to "both" it will create',
-                              'a multichannel feature map of both.'))
+                              'frequencies. if set to "optic" it will create',
+                              'optical flow features. if set to "var-freq" it',
+                              'will create a feature map of variance and freq',
+                              '. If set to "var-opt" it will create a feature',
+                              ' map of variance and optical flow. If set to ',
+                              '"freq-opt" it will create a feature map of ',
+                              'freq and optical flow. If set to "all" it ',
+                              'will create a multichannel feature map of all ',
+                              'features.'))
     parser.add_argument("-s", "--save_inproc", action="store_true",
                         help=("if true data will be written in time (good for",
                               " large datasets)"))
@@ -162,7 +282,11 @@ if __name__ == "__main__":
 
     dispatch = {'variance': get_variance_as_im,
                 'frequency': get_beat_frequency,
-                'both': get_features}
+                'optic': get_optical_flow,
+                'var-opt': stack_var_optic,
+                'var-freq': stack_var_freq,
+                'freq-opt': stack_freq_opt,
+                'all': get_features}
     # run over all input in parallel
     out = joblib.Parallel(n_jobs=args['n_jobs'], verbose=10,)(
           joblib.delayed(save_helper)(dispatch[args['feature']], f,
