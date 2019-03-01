@@ -128,7 +128,7 @@ def get_optical_flow(video):
     for next_frame in video[1:]:
         previous_frame = initial_frame
         flow = cv2.calcOpticalFlowFarneback(previous_frame, next_frame, None,
-                                            0.5, 3, 15, 3, 5, 1.2, 0)
+                                            0.5, 3, 5, 3, 5, 1.2, 0)
         mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
         hsv[..., 0] = ang*180/np.pi/2
         hsv[..., 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
@@ -241,14 +241,14 @@ def save_helper(dispatch, filename, feature, outfile):
 if __name__ == "__main__":
     cwd = os.getcwd()
     parser = argparse.ArgumentParser(
-        description=('Reads all png files from video subdirectories and ',
-                     'creates an npy file for each subdirectory'),
+        description=('Reads all npy files from video directory and ',
+                     'creates an npy file for each containing a feature map'),
         add_help='How to use', prog='png_to_npy.py <args>')
 
     # Required arguments
     parser.add_argument("-i", "--input", required=True,
-                        help=("path to the directory containing video ",
-                              "subdirectories"))
+                        help=("path to the directory containing videos as npy",
+                              " files"))
 
     # optional arguments
     parser.add_argument("-o", "--output", default=os.path.join(cwd, "videos"),
@@ -269,9 +269,6 @@ if __name__ == "__main__":
                               'freq and optical flow. If set to "all" it ',
                               'will create a multichannel feature map of all ',
                               'features.'))
-    parser.add_argument("-s", "--save_inproc", action="store_true",
-                        help=("if true data will be written in time (good for",
-                              " large datasets)"))
 
     # parse input and output arguments
     args = vars(parser.parse_args())
