@@ -214,7 +214,7 @@ def get_features(vid, f_size=5):
                       get_optical_flow(vid)))
 
 
-def save_helper(dispatch, filename, feature, outfile):
+def save_helper(dispatch, filename, feature, outfile, add_greyscale):
     """
     saves feature map as determined by command line args
 
@@ -231,6 +231,8 @@ def save_helper(dispatch, filename, feature, outfile):
     """
     vid = np.load(filename)
     out = dispatch(vid)
+    if(add_greyscale):
+        out = np.dstack((out, vid[0]))
     key = filename.split(os.path.sep)[-1].split(".")[0]
     fname = "{}_{}.npy".format(key, feature)
     outfile = os.path.join(outfile, fname)
@@ -269,6 +271,8 @@ if __name__ == "__main__":
                               'freq and optical flow. If set to "all" it ',
                               'will create a multichannel feature map of all ',
                               'features.'))
+    parser.add_argument("--add_greyscale", "-g", action='store_true',
+                        help="if set the first frame will be added to output")
 
     # parse input and output arguments
     args = vars(parser.parse_args())
@@ -287,6 +291,7 @@ if __name__ == "__main__":
     # run over all input in parallel
     out = joblib.Parallel(n_jobs=args['n_jobs'], verbose=10,)(
           joblib.delayed(save_helper)(dispatch[args['feature']], f,
-                                      args['feature'], args['output'])
+                                      args['feature'], args['output'],
+                                      args['add_greyscale'])
           for f in file_list
     )
