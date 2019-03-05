@@ -20,12 +20,12 @@ The data are all available on GCP: gs://uga-dsp/project2
 ## feature_engineering.py
 * runs a folder of cilia videos in parallel extracting each feature as directed
 ### To run
-$ python feature_engineering.py -i \<input directory\> -o \<output directory\> -f \<feature name\> [-g | if you want greyscale frame added]
+$ python feature_engineering.py -i <input directory> -o <output directory> -f <feature name> [-g | if you want greyscale frame added]
 "$ python feature_engineering.py -h" for help
 ## png_to_npy.py
 * runs a folder of cilia video pngs converting them to npy files
 ### To run
-$ python png_to_npy.py -i \<input directory\>  -o \<output directory\> [-s | to save while processing to conserve ram]
+$ python png_to_npy.py -i <input directory>  -o <output directory> [-s | to save while processing to conserve ram]
 "$ python png_to_npy.py -h" for help
 
 
