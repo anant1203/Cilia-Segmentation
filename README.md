@@ -4,6 +4,17 @@ implicated in a wide variety of syndromes that affected multiple organs.
 
 # Approach
 
+The training data consists of videos The first step would be to extract features from data.
+
+As each sample is a video, we can make use of spatial as well as temporal features. 
+
+The features we used are:
+1) [Variance fluctuations](https://github.com/dsp-uga/Taylor-P2/wiki/Pixel-Variance)
+2) [Optical Flow](https://github.com/dsp-uga/Taylor-P2/wiki/Optical-Flow) 
+3) [Beat Frequency](https://github.com/dsp-uga/Taylor-P2/wiki/Beat-Frequency)
+
+We pass the extracted features through a [U-NET](https://github.com/dsp-uga/Taylor-P2/wiki/Unet)
+
 # Data
 The data are all available on GCP: gs://uga-dsp/project2
 
