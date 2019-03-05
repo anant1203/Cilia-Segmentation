@@ -16,6 +16,18 @@ The data are all available on GCP: gs://uga-dsp/project2
 * keras
 * open-cv
 
+# Scripts
+## feature_engineering.py
+* runs a folder of cilia videos in parallel extracting each feature as directed
+### To run
+$ python feature_engineering.py -i <input directory> -o <output directory> -f <feature name> [-g | if you want greyscale frame added]
+"$ python feature_engineering.py -h" for help
+## png_to_npy.py
+* runs a folder of cilia video pngs converting them to npy files
+### To run
+$ python png_to_npy.py -i <input directory>  -o <output directory> [-s | to save while processing to conserve ram]
+"$ python png_to_npy.py -h" for help
+
 
 # Results
 
@@ -38,4 +50,3 @@ There are no specific guidlines for contibuting. If you see something that could
 [1] https://docs.opencv.org/3.4/d7/d8b/tutorial_py_lucas_kanade.html
 
 [2] https://towardsdatascience.com/image-pre-processing-c1aec0be3edf
-
