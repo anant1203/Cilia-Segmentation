@@ -13,3 +13,7 @@
 ## Sumer Singh
 
 ## Anant Tripathi
+* Implemented Optical Flow
+* Created and Contributed wiki
+* Contributed to  Readme
+* Managed the repositiory
