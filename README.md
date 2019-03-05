@@ -16,7 +16,14 @@ The data are all available on GCP: gs://uga-dsp/project2
 * keras
 * open-cv
 
+
 # Results
+
+| Features Used                                       | IOU   |
+|-----------------------------------------------------|-------|
+| Beat Frequency + 1 frame                            | 15%   |
+| Optical flow                                        | 24.5% |
+| Variance Fluctuations, Beat Frequency, Optical Flow | 34.4% |
 
 
 # Authors
