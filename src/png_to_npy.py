@@ -10,10 +10,17 @@ import numpy as np
 def dir_to_npy(dir, save=False, outfile=None):
     """
     This will convert a directory of png images to a single npy file
-    Parameters:
-    dir: string, directory containing png files
-    save: boolean, if true this module will save the npy file directly
-    outfile: string, directory to save npy file if save == true
+
+    Parameters
+    ----------
+    dir : string, directory containing png files
+    save : boolean, if true this module will save the npy file directly
+    outfile : string, directory to save npy file if save == true
+
+    Returns
+    -------
+    output : matrix shape h by w by f
+        numpy array of video frames only returned if save is false
     """
     vid = []
     for im in sorted(glob.glob(dir+'/*')):

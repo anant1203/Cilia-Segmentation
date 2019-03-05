@@ -15,12 +15,13 @@ def video_raster_reshape(vid):
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m
+    vid : a matrix shape f,n,m where f is the number of frames size n by m
+        video to be reshaped
 
     Result
     ------
-    matrix, a matrix shape n*m,f representing the video in the format listed
-        above
+    matrix : a matrix shape n*m,f
+        reshaped video
     """
     # reorder frame and spatial axes for ultimate reshape
     vid = np.swapaxes(vid, 0, 2)
@@ -42,12 +43,12 @@ def get_variance_as_im(vid):
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m
+    vid : a matrix shape f,n,m where f is the number of frames size n by m
 
     Result
     ------
-    var_im, a matrix shape n,m where each pixel hold the variance of that
-        pixel's data over the video
+    var_im : a matrix shape n,m
+        each pixel hold the variance of that pixel's data over the video
     """
     # convert to matrix
     matrix = video_raster_reshape(vid)
@@ -67,12 +68,15 @@ def get_beat_frequency(vid, f_size=15):
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m.
-    f_size, the dimensions of the filter.
+    vid : a matrix shape f,n,m where f is the number of frames size n by m.
+        the input video
+    f_size : int
+        the dimensions of the filter.
 
     Result
     ------
-    Matrix of shape n, m consisting of each pixel's dominant frequency
+    results_filtered : matrix of shape n, m
+        each pixel's dominant frequency
     """
 
     # Number of frames
@@ -106,11 +110,13 @@ def get_optical_flow(video):
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m
+    vid : a matrix shape f,n,m where f is the number of frames size n by m
+        the input video
 
     Return
     ------
-    final: final aray matrix n x m
+    final : matrix n x m
+        contains optical flow summed of each pixl in image
     """
 
     # storing the first frame of the video
@@ -145,55 +151,59 @@ def get_optical_flow(video):
     return final
 
 
-def stack_var_optic():
+def stack_var_optic(vid, f_size):
     """
     Stack the variance and optical flow into a 3D array
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m.
-    f_size, the dimensions of the filter used in fft.
+    vid : a matrix shape f,n,m where f is the number of frames size n by m.
+        input video
+    f_size : int
+        the dimensions of the filter used in fft.
 
     Result
     ------
-    Matrix of shape frame_width, frame_heigth, number of features
+    output : matrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
-    return np.dstack((get_variance_as_im(vid), get_optical_flow(vid)))
+    return np.dstack((get_variance_as_im(vid), get_optical_flow(vid, f_size)))
 
 
-def stack_var_freq():
+def stack_var_freq(vid):
     """
     Stack the variance and frequency into a 3D array
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m.
-    f_size, the dimensions of the filter used in fft.
+    vid : a matrix shape f,n,m where f is the number of frames size n by m.
+        input video
 
     Result
     ------
-    Matrix of shape frame_width, frame_heigth, number of features
+    output : atrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
     return np.dstack((get_variance_as_im(vid), get_beat_frequency(vid)))
 
 
-def stack_freq_opt():
+def stack_freq_opt(vid, f_size):
     """
     Stack the frequency and optical flow into a 3D array
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m.
-    f_size, the dimensions of the filter used in fft.
+    vid : a matrix shape f,n,m where f is the number of frames size n by m.
+        input video
+    f_size : int
+        the dimensions of the filter used in fft.
 
     Result
     ------
-    Matrix of shape frame_width, frame_heigth, number of features
+    output : matrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
-    return np.dstack((get_beat_frequency(vid), get_optical_flow(vid)))
+    return np.dstack((get_beat_frequency(vid), get_optical_flow(vid, f_size)))
 
 
 def get_features(vid, f_size=5):
@@ -202,16 +212,18 @@ def get_features(vid, f_size=5):
 
     Parameters
     ----------
-    vid, a matrix shape f,n,m where f is the number of frames size n by m.
-    f_size, the dimensions of the filter used in fft.
+    vid : a matrix shape f,n,m where f is the number of frames size n by m.
+        input video
+    f_size : int
+        the dimensions of the filter used in fft.
 
     Result
     ------
-    Matrix of shape frame_width, frame_heigth, number of features
+    output : matrix of shape frame_width, frame_heigth, number of features
     """
     # Return both features as multichannel
     return np.dstack((get_beat_frequency(vid), get_variance_as_im(vid),
-                      get_optical_flow(vid)))
+                      get_optical_flow(vid, f_size)))
 
 
 def save_helper(dispatch, filename, feature, outfile, add_greyscale):
@@ -220,10 +232,10 @@ def save_helper(dispatch, filename, feature, outfile, add_greyscale):
 
     Parameters
     ----------
-    dispatch: the function to be called on numpy
-    filename: location of the numpy file
-    feature: name of feature being created
-    outfile: directory to save to
+    dispatch : the function to be called on numpy
+    filename : location of the numpy file
+    feature : name of feature being created
+    outfile : directory to save to
 
     Return
     ------
