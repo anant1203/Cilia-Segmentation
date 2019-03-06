@@ -11,14 +11,14 @@ import joblib
 def video_raster_reshape(vid):
     """
     Reshape 3d video matrix into a 2d matrix where each row is a pixel and each
-    column is a frame, the picel order remains that of a raster scan of the vid
+    column is a frame, the pixel order remains that of a raster scan of the vid.
 
     Parameters
     ----------
     vid : a matrix shape f,n,m where f is the number of frames size n by m
         video to be reshaped
 
-    Result
+    Returns
     ------
     matrix : a matrix shape n*m,f
         reshaped video
@@ -45,7 +45,7 @@ def get_variance_as_im(vid):
     ----------
     vid : a matrix shape f,n,m where f is the number of frames size n by m
 
-    Result
+    Returns
     ------
     var_im : a matrix shape n,m
         each pixel hold the variance of that pixel's data over the video
@@ -73,7 +73,7 @@ def get_beat_frequency(vid, f_size=15):
     f_size : int
         the dimensions of the filter.
 
-    Result
+    Returns
     ------
     results_filtered : matrix of shape n, m
         each pixel's dominant frequency
@@ -113,7 +113,7 @@ def get_optical_flow(video):
     vid : a matrix shape f,n,m where f is the number of frames size n by m
         the input video
 
-    Return
+    Returns
     ------
     final : matrix n x m
         contains optical flow summed of each pixl in image
@@ -162,7 +162,7 @@ def stack_var_optic(vid, f_size):
     f_size : int
         the dimensions of the filter used in fft.
 
-    Result
+    Returns
     ------
     output : matrix of shape frame_width, frame_heigth, number of features
     """
@@ -179,7 +179,7 @@ def stack_var_freq(vid):
     vid : a matrix shape f,n,m where f is the number of frames size n by m.
         input video
 
-    Result
+    Returns
     ------
     output : atrix of shape frame_width, frame_heigth, number of features
     """
@@ -198,7 +198,7 @@ def stack_freq_opt(vid, f_size):
     f_size : int
         the dimensions of the filter used in fft.
 
-    Result
+    Returns
     ------
     output : matrix of shape frame_width, frame_heigth, number of features
     """
@@ -217,7 +217,7 @@ def get_features(vid, f_size=5):
     f_size : int
         the dimensions of the filter used in fft.
 
-    Result
+    Returns
     ------
     output : matrix of shape frame_width, frame_heigth, number of features
     """
@@ -237,7 +237,7 @@ def save_helper(dispatch, filename, feature, outfile, add_greyscale):
     feature : name of feature being created
     outfile : directory to save to
 
-    Return
+    Returns
     ------
     None
     """
