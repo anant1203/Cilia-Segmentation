@@ -48,18 +48,19 @@ Create a data folder containing the features, masks, training hash list and test
 Follow the given structure.
 
 data
---features
---|--<hash_1>.npy
---|--<hash_2>.npy
---|--.....
---|--<hash_n>.npy
---masks
---|--<mask_1>.png
---|--<mask_2>.png
---|--.....
---|--<mask_n>.png
---train.txt
---test.txt
+--features  
+--|--<hash_1>.npy  
+--|--<hash_2>.npy  
+--|--.....  
+--|--<hash_n>.npy  
+--masks  
+--|--<mask_1>.png  
+--|--<mask_2>.png  
+--|--.....  
+--|--<mask_n>.png  
+--train.txt  
+--test.txt  
+
 
 `model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
 
