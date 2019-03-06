@@ -99,6 +99,10 @@ There are no specific guidlines for contibuting. If you see something that could
 
 [2] https://towardsdatascience.com/image-pre-processing-c1aec0be3edf
 
+[3] https://github.com/dsp-uga/Taylor-P2/wiki/Unet
+
+[4] https://github.com/quinngroup/cilia-cbf
+
 # License
 
 This Project is under the MIT License. For more details visit License file here: https://github.com/dsp-uga/Taylor-P2/blob/master/LICENSE
