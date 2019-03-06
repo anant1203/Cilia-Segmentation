@@ -44,6 +44,23 @@ The data are all available on GCP: gs://uga-dsp/project2
 
 ## model.py
 
+Create a data folder containing the features, masks, training hash list and testing hash list.
+Follow the given structure.
+
+data
+--features
+--|--<hash_1>.npy
+--|--<hash_2>.npy
+--|--.....
+--|--<hash_n>.npy
+--masks
+--|--<mask_1>.png
+--|--<mask_2>.png
+--|--.....
+--|--<mask_n>.png
+--train.txt
+--test.txt
+
 `model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
 
 Required parameters:
@@ -55,6 +72,8 @@ Optional parameters:
 `<number of epochs>` Number of epochs to train for. Defaults to 100.
   
 `<train-validation split>` Ratio to split data. Enter 1 to use all data for training. Defaults to 0.7
+
+Predictions will be stored in `data/predictions`
 
 # Results
 
