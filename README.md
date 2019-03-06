@@ -63,7 +63,7 @@ data
 --test.txt  
 
 ### To run
-`model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
+`model.py -d \<data directory>\ -e \<number of epochs>\ -v \<train-validation split>\`
 
 Required parameters:
 
@@ -98,6 +98,10 @@ There are no specific guidlines for contibuting. If you see something that could
 [1] https://docs.opencv.org/3.4/d7/d8b/tutorial_py_lucas_kanade.html
 
 [2] https://towardsdatascience.com/image-pre-processing-c1aec0be3edf
+
+[3] https://github.com/dsp-uga/Taylor-P2/wiki/Unet
+
+[4] https://github.com/quinngroup/cilia-cbf
 
 # License
 
