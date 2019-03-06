@@ -75,3 +75,4 @@ def load_data(training_list, testing_list):
     y_train = to_one_hot(y_2d)
 
 return X_train, X_test, y_train
+
