@@ -47,7 +47,7 @@ The data are all available on GCP: gs://uga-dsp/project2
 Create a data folder containing the features, masks, training hash list and testing hash list.
 Follow the given structure.
 
-data
+data  
 --features  
 --|--<hash_1>.npy  
 --|--<hash_2>.npy  
