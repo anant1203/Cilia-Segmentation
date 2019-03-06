@@ -33,6 +33,7 @@ def to_one_hot(array, num_classes=3):
 def load_data(data_path, training_list, testing_list, num_classes=3):
     """
     This function loads the data required for the network.
+    
     Parameters
     ----------
     training_list : List
