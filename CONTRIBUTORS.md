@@ -11,7 +11,14 @@
  * Contributed to README
 
 ## Sumer Singh
-
+ * Implemented Beat Frequency
+ * Implemented Dataloader
+ * Implemented Model
+ * Created GCP VM.
+ * Training, testing and tuning of the model.
+ * Contributed to Wiki
+ * Contributed to README
+ 
 ## Anant Tripathi
 * Implemented Optical Flow
 * Created and Contributed wiki

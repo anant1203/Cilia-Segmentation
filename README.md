@@ -13,7 +13,7 @@ The features we used are:
 2) [Optical Flow](https://github.com/dsp-uga/Taylor-P2/wiki/Optical-Flow) 
 3) [Beat Frequency](https://github.com/dsp-uga/Taylor-P2/wiki/Beat-Frequency)
 
-We pass the extracted features through a [U-NET](https://github.com/dsp-uga/Taylor-P2/wiki/Unet)
+We pass the extracted features through a [U-NET.](https://github.com/dsp-uga/Taylor-P2/wiki/Unet)
 
 # Data
 The data are all available on GCP: gs://uga-dsp/project2
@@ -31,14 +31,51 @@ The data are all available on GCP: gs://uga-dsp/project2
 ## feature_engineering.py
 * runs a folder of cilia videos in parallel extracting each feature as directed
 ### To run
-$ python feature_engineering.py -i \<input directory\> -o \<output directory\> -f \<feature name\> [-g | if you want greyscale frame added]
-"$ python feature_engineering.py -h" for help
+`python feature_engineering.py -i \<input directory\> -o \<output directory\> -f \<feature name\> [-g | if you want greyscale frame added]`
+
+`python feature_engineering.py -h` for help
 ## png_to_npy.py
 * runs a folder of cilia video pngs converting them to npy files
 ### To run
-$ python png_to_npy.py -i \<input directory\>  -o \<output directory\> [-s | to save while processing to conserve ram]
-"$ python png_to_npy.py -h" for help
+`python png_to_npy.py -i \<input directory\>  -o \<output directory\> [-s | to save while processing to conserve ram]`
 
+`python png_to_npy.py -h` for help
+
+
+## model.py
+
+* Unet based model to get predictions using the extracted features. 
+* Create a data folder containing the features, masks, training hash list and testing hash list.
+* Follow the given structure:
+
+data  
+--features  
+--|--<hash_1>.npy  
+--|--<hash_2>.npy  
+--|--.....  
+--|--<hash_n>.npy  
+--masks  
+--|--<mask_1>.png  
+--|--<mask_2>.png  
+--|--.....  
+--|--<mask_n>.png  
+--train.txt  
+--test.txt  
+
+### To run
+`model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
+
+Required parameters:
+
+`<data directory>` Path to the data folder created as per the specifictions.
+
+Optional parameters:
+
+`<number of epochs>` Number of epochs to train for. Defaults to 100.
+  
+`<train-validation split>` Ratio to split data. Enter 1 to use all data for training. Defaults to 0.7
+
+Predictions will be stored in `data/predictions`
 
 # Results
 
