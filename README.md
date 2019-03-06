@@ -44,8 +44,9 @@ The data are all available on GCP: gs://uga-dsp/project2
 
 ## model.py
 
+Unet based model to get predictions using the extracted features. 
 Create a data folder containing the features, masks, training hash list and testing hash list.
-Follow the given structure.
+Follow the given structure:
 
 data  
 --features  
@@ -61,12 +62,12 @@ data
 --train.txt  
 --test.txt  
 
-
+### To run
 `model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
 
 Required parameters:
 
-`<data directory>` Path to the data folder created in as per the specifictions.
+`<data directory>` Path to the data folder created as per the specifictions.
 
 Optional parameters:
 
