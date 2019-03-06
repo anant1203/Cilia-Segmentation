@@ -13,7 +13,7 @@ The features we used are:
 2) [Optical Flow](https://github.com/dsp-uga/Taylor-P2/wiki/Optical-Flow) 
 3) [Beat Frequency](https://github.com/dsp-uga/Taylor-P2/wiki/Beat-Frequency)
 
-We pass the extracted features through a [U-NET](https://github.com/dsp-uga/Taylor-P2/wiki/Unet)
+We pass the extracted features through a [U-NET.](https://github.com/dsp-uga/Taylor-P2/wiki/Unet)
 
 # Data
 The data are all available on GCP: gs://uga-dsp/project2
