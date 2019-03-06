@@ -4,9 +4,9 @@ implicated in a wide variety of syndromes that affected multiple organs.
 
 # Approach
 
-The training data consists of videos The first step would be to extract features from data.
+The first step would be to extract features from data.
 
-As each sample is a video, we can make use of spatial as well as temporal features. 
+The data consists of videos (in the form of 100 consecutive frames). As each sample is a video, we can make use of spatial as well as temporal features. 
 
 The features we used are:
 1) [Variance fluctuations](https://github.com/dsp-uga/Taylor-P2/wiki/Pixel-Variance)
