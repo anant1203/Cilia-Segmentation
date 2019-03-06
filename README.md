@@ -44,9 +44,9 @@ The data are all available on GCP: gs://uga-dsp/project2
 
 ## model.py
 
-Unet based model to get predictions using the extracted features. 
-Create a data folder containing the features, masks, training hash list and testing hash list.
-Follow the given structure:
+* Unet based model to get predictions using the extracted features. 
+* Create a data folder containing the features, masks, training hash list and testing hash list.
+* Follow the given structure:
 
 data  
 --features  
