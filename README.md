@@ -4,9 +4,9 @@ implicated in a wide variety of syndromes that affected multiple organs.
 
 # Approach
 
-The training data consists of videos The first step would be to extract features from data.
+The first step would be to extract features from data.
 
-As each sample is a video, we can make use of spatial as well as temporal features. 
+The data consists of videos (in the form of 100 consecutive frames). As each sample is a video, we can make use of spatial as well as temporal features. 
 
 The features we used are:
 1) [Variance fluctuations](https://github.com/dsp-uga/Taylor-P2/wiki/Pixel-Variance)
@@ -63,7 +63,7 @@ data
 --test.txt  
 
 ### To run
-`model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
+`model.py -d \<data directory>\ -e \<number of epochs>\ -v \<train-validation split>\`
 
 Required parameters:
 
@@ -98,6 +98,10 @@ There are no specific guidlines for contibuting. If you see something that could
 [1] https://docs.opencv.org/3.4/d7/d8b/tutorial_py_lucas_kanade.html
 
 [2] https://towardsdatascience.com/image-pre-processing-c1aec0be3edf
+
+[3] https://arxiv.org/abs/1505.04597
+
+[4] https://github.com/quinngroup/cilia-cbf
 
 # License
 
