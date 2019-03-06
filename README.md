@@ -47,9 +47,10 @@ The data are all available on GCP: gs://uga-dsp/project2
 `model.py -d <data directory> -e <number of epochs> -v <train-validation split>`
 
 Required parameters:
+
 `<data directory>` Path to the data folder created in as per the specifictions.
 
-Optional parameters"
+Optional parameters:
 
 `<number of epochs>` Number of epochs to train for. Defaults to 100.
   
