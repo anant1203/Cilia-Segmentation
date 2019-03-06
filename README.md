@@ -91,7 +91,7 @@ Predictions will be stored in `data/predictions`
 * Andrew Durden
 * Anant Tripathi
 
-# Contibution
+# Contribution
 There are no specific guidlines for contibuting. If you see something that could be improved, send a pull request! If you think something should be done differently (or is just-plain-broken), please create an issue.
 
 # Reference
