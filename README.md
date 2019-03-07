@@ -83,7 +83,7 @@ Predictions will be stored in `data/predictions`
 |-----------------------------------------------------|-------|
 | Beat Frequency + 1 frame                            | 15%   |
 | Optical flow                                        | 24.5% |
-| Variance Fluctuations, Beat Frequency, Optical Flow | 34.4% |
+| Variance Fluctuations, Beat Frequency, Optical Flow + 1 frame | 34.4% |
 
 
 # Authors
